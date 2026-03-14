@@ -43,24 +43,32 @@ export default function Dashboard() {
     value: item.count
   }));
   // --- Leads by Status ---
-  const leadsStatus = dumyData.leads.reduce((acc, lead) => {
-    acc[lead.status] = (acc[lead.status] || 0) + 1;
-    return acc;
-  }, {});
-  const leadsData = Object.keys(leadsStatus).map(key => ({
-    name: key,
-    value: leadsStatus[key]
-  }));
+  const leadsData = data?.leads?.map(item => ({
+  name: item._id,
+  value: item.count
+}));              
+  // const leadsStatus = dumyData.leads.reduce((acc, lead) => {
+  //   acc[lead.status] = (acc[lead.status] || 0) + 1;
+  //   return acc;
+  // }, {});
+  // const leadsData = Object.keys(leadsStatus).map(key => ({
+  //   name: key,
+  //   value: leadsStatus[key]
+  // }));
 
   // --- Deals by Stage ---
-  const dealsStage = dumyData.deals.reduce((acc, deal) => {
-    acc[deal.stage] = (acc[deal.stage] || 0) + 1;
-    return acc;
-  }, {});
-  const dealsData = Object.keys(dealsStage).map(key => ({
-    name: key,
-    value: dealsStage[key]
-  }));
+  const dealsData = data?.deals?.map(item => ({
+  name: item._id,
+  value: item.count
+}));
+  // const dealsStage = dumyData.deals.reduce((acc, deal) => {
+  //   acc[deal.stage] = (acc[deal.stage] || 0) + 1;
+  //   return acc;
+  // }, {});
+  // const dealsData = Object.keys(dealsStage).map(key => ({
+  //   name: key,
+  //   value: dealsStage[key]
+  // }));
 
 
   return (
