@@ -17,6 +17,7 @@ const getDashboardData=asyncHandler(async(req , res , next)=>{
    const deals = await Deal.aggregate([
     { $group: { _id: "$stage", count: { $sum: 1 } } }
   ]);
+  // add leads and deals
 
     return res.status(200).json({
         status:'success',
