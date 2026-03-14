@@ -87,7 +87,7 @@ export default function Dashboard() {
             <ResponsiveContainer width="100%" height={250}>
               <PieChart>
                 <Pie data={leadsData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80}>
-                  {leadsData.map((entry, index) => (
+                  {leadsData?.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
