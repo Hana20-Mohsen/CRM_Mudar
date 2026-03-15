@@ -6,6 +6,8 @@ const connectDB= async()=>{
     try {
         
         const uri= process.env.CONNECTION_STRING;
+        console.log(`uri : ${uri}`);
+        
         if(!uri){
             throw new Error("MONGODB_URI is missing. Check your .env file.");
         }
