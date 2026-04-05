@@ -32,7 +32,7 @@ export default function Reports() {
   // }, []);
 
   return (
-    <div className={`container-fluid py-4 bg-light min-vh-100 ${styles.bg_gredient}`}>
+    <div className={`container-fluid py-4  min-vh-100 ${styles.bg_gredient}`}>
       <i class={`${styles.toggle_btn} fa-solid fa-bars me-3 fs-2 mb-3 text-light`}
         onClick={toggleSidebar}
       ></i>
@@ -41,8 +41,8 @@ export default function Reports() {
       {/* 🔘 زرار ذكي */}
 
 
-      <div className={`card shadow-sm border-0 overflow-auto  ${styles.card}`}>
-        <table className="table table-hover align-middle mb-0 d-none d-md-block">
+      <div className={`card shadow-sm border-0 overflow-auto  ${styles.card} d-none d-md-block`}>
+        <table className="table table-hover align-middle mb-0 ">
           <thead className="bg-white border-bottom">
             <tr>
               <th className="ps-4 py-3 text-uppercase small fw-bold text-muted">
@@ -126,7 +126,9 @@ export default function Reports() {
             ))}
           </tbody>
         </table>
-        <div className="d-md-none">
+
+      </div>
+              <div className="d-md-none">
           {attendance.map((a) => (
             <div key={a._id} className="card mb-3 shadow-sm p-3">
 
@@ -154,7 +156,6 @@ export default function Reports() {
             </div>
           ))}
         </div>
-      </div>
     </div>
   );
 }
