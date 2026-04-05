@@ -24,7 +24,7 @@ export default function Register() {
     e.preventDefault();
 
     try {
-      const res = await fetch("crmbackend-production-160d.up.railway.app/api/v1/user/register", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/v1/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

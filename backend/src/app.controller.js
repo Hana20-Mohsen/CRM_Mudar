@@ -20,78 +20,78 @@ import { globalErrorHandling } from "./utilities/error/error.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-console.log('__dirname : ' , __dirname);
+console.log('__dirname : ', __dirname);
 
 
-const bootstrap=(app , express )=>{
-    app.use(express.json());
-    // app.use('/static', express.static(path.join(__dirname, 'utilities/email/template/img')));
+const bootstrap = (app, express) => {
+  app.use(express.json());
+  // app.use('/static', express.static(path.join(__dirname, 'utilities/email/template/img')));
 
+const corsOptions = {
+  origin: function (origin, callback) {
     const allowedOrigins = [
-    "http://localhost:5173"  ,
-    "https://crm-mudar-hanas-projects-30a8b9bd.vercel.app",
-    "https://crm-mudar.vercel.app"
-      ];
-    //here i will use cors
-    app.use(cors({
-        origin: (origin, callback) => {
-          if (!origin || allowedOrigins.includes(origin)) {
-            callback(null, true);
-          } else {
-            callback(new Error('CORS not allowed'));
-          }
-        },
-        credentials: true
-      }));
-      app.options('*', cors({
-  origin: allowedOrigins,
-  credentials: true
-}));
-// app.options('*', cors());
-      // -----------------socket io middleware-----------------
-    //   app.use((req, res, next) => {
-    //     req.io = io; 
-    //     next();
-    // });
-  console.log("__dirname" , __dirname);
+      "http://localhost:5173",
+      "https://crm-mudar-hanas-projects-30a8b9bd.vercel.app",
+      "https://crm-mudar.vercel.app"
+    ];
 
-      const uploadsPath =path.join(__dirname, '../uploads');
-      console.log('Serving static files from:', uploadsPath);
-      if (!fs.existsSync(uploadsPath)) {
-  fs.mkdirSync(uploadsPath, { recursive: true });
-}
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
+  credentials: true,
+};
 
-     app.use('/uploads', express.static(uploadsPath));
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // ✅ SAME config
 
-    app.get('/',(req,res,next)=>{
-        return res.status(200).json({
-            message:"welcome in crm project..."
-        })
+  // app.options('*', cors());
+  // -----------------socket io middleware-----------------
+  //   app.use((req, res, next) => {
+  //     req.io = io; 
+  //     next();
+  // });
+  console.log("__dirname", __dirname);
+
+  const uploadsPath = path.join(__dirname, '../uploads');
+  console.log('Serving static files from:', uploadsPath);
+  if (!fs.existsSync(uploadsPath)) {
+    fs.mkdirSync(uploadsPath, { recursive: true });
+  }
+
+  app.use('/uploads', express.static(uploadsPath));
+
+  app.get('/', (req, res, next) => {
+    return res.status(200).json({
+      message: "welcome in crm project..."
     })
+  })
 
 
 
-    app.use('/api/v1/user' ,userController )
-    app.use('/api/v1/review' , reviewController)
-    app.use('/api/v1/task' ,taskController)
-    app.use('/api/v1/board' , boardController)
-    app.use('/api/v1/list' , listController)
-    app.use('/api/v1/department' , departmentController)
-    app.use('/api/v1/report' , reportController)
-    app.use('/api/v1/assignedTasks' , assignedtasksController)
-    app.use('/api/v1/lead' , leadController)
-    app.use('/api/v1/contact' , contactsController)
-    app.use('/api/v1/deal' , dealsController)
+  app.use('/api/v1/user', userController)
+  app.use('/api/v1/review', reviewController)
+  app.use('/api/v1/task', taskController)
+  app.use('/api/v1/board', boardController)
+  app.use('/api/v1/list', listController)
+  app.use('/api/v1/department', departmentController)
+  app.use('/api/v1/report', reportController)
+  app.use('/api/v1/assignedTasks', assignedtasksController)
+  app.use('/api/v1/lead', leadController)
+  app.use('/api/v1/contact', contactsController)
+  app.use('/api/v1/deal', dealsController)
 
-    app.all('*' , (req,res,next)=>{
-        return res.status(404).json({
-            message:'In-Valid routing!!'
-        })
+  app.all('*', (req, res, next) => {
+    return res.status(404).json({
+      message: 'In-Valid routing!!'
     })
+  })
 
-    app.use(globalErrorHandling)
+  app.use(globalErrorHandling)
 
-    connectDB()
+  connectDB()
 }
 
 export default bootstrap;
