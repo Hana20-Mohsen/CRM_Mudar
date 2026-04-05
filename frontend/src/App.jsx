@@ -108,7 +108,7 @@ export default function App() {
         <Route
           path="/leads"
           element={
-            <ProtectedRoute roles={["admin", "user" , "employee" , "leader"]}>
+            <ProtectedRoute roles={["admin", "user" , "leader"]}>
               <Leads
                 leads={leads}
                 onAdd={addLead}
@@ -182,10 +182,17 @@ export default function App() {
             </ProtectedRoute>
           }
         />
-
+        <Route
+          path="/attendance"
+          element={
+            <ProtectedRoute roles={["admin", "employee", "leader"]}>
+             <Attendance/>
+            </ProtectedRoute>
+          }
+        />
         {/* Reports */}
         <Route path="/reports" element={<Reports />} />
-        <Route path="/attendance" element={<Attendance/>} />
+        {/* <Route path="/attendance" element={<Attendance/>} /> */}
         <Route path="/unauthorized" element={<h2 className="text-white">Unauthorized Access</h2>} />
       </Route>
     </Routes>

@@ -16,7 +16,8 @@ export default function Login() {
 
     if (loggedUser) {
       if (loggedUser.role === "admin") navigate("/dashboard");
-      else if (loggedUser.role === "user" ||loggedUser.role === "leader" ||loggedUser.role === "employee") navigate("/leads");
+      else if (loggedUser.role === "user" ||loggedUser.role === "leader" ) navigate("/leads");
+      else if(loggedUser.role === "employee") navigate("/attendance");
       else navigate("/tasks");
     }
   };
