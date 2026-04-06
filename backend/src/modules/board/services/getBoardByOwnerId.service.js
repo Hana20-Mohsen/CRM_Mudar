@@ -11,7 +11,7 @@ const getBoardByOwnerId=asyncHandler(async(req , res , next)=>{
 });
     
     if(boards.length===0){
-        return res.status(404).json({message:'no boards found for this user'})
+        return res.status(404).json({message:'no boards found'})
     }
     return res.status(200).json({
         message:'boards retrieved successfully',

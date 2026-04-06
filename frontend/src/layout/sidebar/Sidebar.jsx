@@ -3,7 +3,7 @@ import styles from '../sidebar/side.module.css'
 
 export default function Sidebar({ user, isOpen, toggleSidebar }) {
   const menuItems =
-    user.role === "admin" || user.role === "leader"
+    user.role === "admin"
       ? [
         { name: "Dashboard", path: "/dashboard", end: true },
         { name: "Leads", path: "/leads" },
@@ -14,14 +14,21 @@ export default function Sidebar({ user, isOpen, toggleSidebar }) {
         { name: "Reports", path: "/reports" },
         { name: "MonthlyReport", path: "/report" },
       ]
-      : user.role === "employee"
+      : user.role === "leader"
         ? [
-          // { name: "Boards", path: "/boards", end: false },
-          // { name: "Tasks", path: "/tasks" },
-          // { name: "Leads", path: "/leads" },
-          { name: "attendance", path: "/attendance" },
+          { name: "Boards", path: "/boards" },
+          { name: "Tasks", path: "/tasks" },
+          { name: "Reports", path: "/reports" },
+          { name: "MonthlyReport", path: "/report" },
         ]
-        : [{ name: "Leads", path: "/leads" }];
+        : user.role === "employee"
+          ? [
+            // { name: "Boards", path: "/boards", end: false },
+            // { name: "Tasks", path: "/tasks" },
+            // { name: "Leads", path: "/leads" },
+            { name: "attendance", path: "/attendance" },
+          ]
+          : [{ name: "Leads", path: "/leads" }];
 
   return (
     <>

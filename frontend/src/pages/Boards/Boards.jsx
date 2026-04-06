@@ -10,29 +10,29 @@ import { TailSpin } from 'react-loader-spinner'
 import { useOutletContext } from "react-router-dom";
 
 export default function Boards() {
-   const { toggleSidebar } = useOutletContext();
+  const { toggleSidebar } = useOutletContext();
   const queryClient = useQueryClient();
-  let { getAllBoards, getEmployeesBoards,getUserRole, addBoard } =
+  let { getAllBoards, getEmployeesBoards, getUserRole, addBoard } =
     useContext(BoardContext);
-    let [userRole, setUserRole] = useState(null);
+  let [userRole, setUserRole] = useState(null);
   let [loading, setloading] = useState(true);
   let [Errmsg, setErrmsg] = useState("");
   let [showForm, setShowForm] = useState(false);
 
-  
+
   const { data, error, isLoading } = useQuery({
     queryKey: ["boards"],
-    queryFn: userRole=='admin'? getAllBoards :getEmployeesBoards,
+    queryFn: userRole == 'admin' ? getAllBoards : getEmployeesBoards,
     enabled: !!userRole,
   });
   useEffect(() => {
     console.log(data?.boards);
-    let role= getUserRole(); 
+    let role = getUserRole();
     console.log(role);
-    
-   if(role){
-    setUserRole(role)
-   }
+
+    if (role) {
+      setUserRole(role)
+    }
   }, []);
   // send data to API
   const sendDataToApi = async (values, resetForm) => {
@@ -82,35 +82,43 @@ export default function Boards() {
     },
   });
 
-  if (isLoading) return (
-    <div className={`${styles.bg_dark} p-0 m-0 h-100 d-flex justify-content-center align-items-center `}>
-      <TailSpin
-        height="80"
-        width="80"
-        color="#2f0df0"
-        ariaLabel="tail-spin-loading"
-        visible={loading}
-      />
-    </div>
-  )
-  if (error) return <div>An error occurred: {error.message}</div>;
+  // if (isLoading) return (
+  //   <div className={`${styles.bg_dark} p-0 m-0 h-100 d-flex justify-content-center align-items-center `}>
+  //     <TailSpin
+  //       height="80"
+  //       width="80"
+  //       color="#2f0df0"
+  //       ariaLabel="tail-spin-loading"
+  //       visible={loading}
+  //     />
+  //   </div>
+  // )
+  if (data === undefined){
+    console.log("No boards found.");
+    
+  }
+  // if (data === undefined) return (
+  //   <div className=" min-vh-100 d-flex justify-content-center align-items-center"><h2 className="text-white">No boards found.</h2></div>
+  // );
+  // if(error) console.log(error?.response?.data?.message);
+  // if (error) return <div className=" text-white"> {error?.response?.data?.message}</div>;
   return (
     <div className={`${styles.bg_dark} p-0 m-0  `}>
       <div className="pt-3 ps-4">
         <i class={`${styles.toggle_btn} fa-solid fa-bars me-3 fs-2 text-white `}
-        onClick={toggleSidebar}
-      ></i>
+          onClick={toggleSidebar}
+        ></i>
       </div>
       <div className={`${styles.iconHolder} z-1`}>
         <i
           onClick={() => setShowForm(true)}
           className="fa-solid fa-plus fs-2 rounded-5 p-1 "
         ></i>
-        
+
       </div>
 
       {/*------------------------------ start form ---------------------------------*/}
-      
+
       {showForm && (
         <div
           className={`${styles.formHolder} z-2 position-absolute top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-center`}
@@ -176,9 +184,9 @@ export default function Boards() {
                 disabled={!(Register.dirty && Register.isValid)}
                 type="submit"
                 className={`btn mt-3 form-control rounded-5 ${Register.dirty && Register.isValid
-                    ? "bg-success text-white"
-                    : "bg-secondary text-light"
-                  }`}
+                  ? "bg-success text-white"
+                  : "bg-secondary text-light"
+                  }`}  
               >
                 {loading ? (
                   "Submit"
@@ -191,11 +199,34 @@ export default function Boards() {
           </div>
         </div>
       )}
+   
       {/*------------------------------ end form ---------------------------------*/}
+      {
+        isLoading && (
+          <div className={`${styles.bg_dark} p-0 m-0 h-100 d-flex justify-content-center align-items-center `}>
+            <TailSpin
+              height="80"
+              width="80"
+              color="#2f0df0"
+              ariaLabel="tail-spin-loading"
+              visible={loading}
+            />
+          </div>
+        ) 
 
-      <div className="container py-2 bg-dark">
+      }
+      {
+        error&&(
+          <div className=" text-white d-flex justify-content-center align-items-center "> <h2>{error?.response?.data?.message}</h2></div>
+        )
+      }
+         {/* {
+        // d-flex justify-content-center align-items-center
+        data===undefined && <div className=" "><h2 className="text-white">No boards found.</h2></div>
+      } */}
+      <div className="container py-2">
         <div className="row">
-          {data?.boards.map((item) => (
+          {data?.boards?.map((item) => (
             <Board item={item} key={item._id} />
           ))}
         </div>
