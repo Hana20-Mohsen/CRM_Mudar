@@ -1,80 +1,79 @@
 import Attendance from "../../../DB/models/attendance.model.js";
-
+import { DateTime } from "luxon";
 export const logout = async (req, res) => {
-  //   try {
-  //     const userId = req.user._id;
-  // console.log(userId)
-  //     const attendance = await Attendance.findOne({
-  //       user: userId,
-  //       checkOutAt: null,
-  //     });
-
-  //     if (!attendance) {
-  //       return res.status(400).json({
-  //         message: "No active check-in found",
-  //       });
-  //     }
-
-  //     attendance.checkOutAt = new Date();
-  //     await attendance.save();
-
-  //     res.status(200).json(attendance);
-  //   } catch (err) {
-  //     res.status(500).json({ message: err.message });
-  //   }
 
   const userId = req.user.id;
-    const now = new Date();
-    const today = now.toISOString().split("T")[0];
+  const nowDate = new Date();
+  const now = DateTime.now().setZone("Africa/Cairo");
+  const today = nowDate.toISOString().split("T")[0];
 
-    const shiftEnd = new Date(`${today}T17:30:00`);
-    const shiftHours = 7;
+  // const shiftEnd = new Date(`${today}T17:30:00`);
+  const shiftEnd = now.set({
+    hour: 17,
+    minute: 30,
+    second: 0,
+    millisecond: 0,
+  });
+  const shiftHours = 7;
 
-    const attendance = await Attendance.findOne({
-      user: userId,
-      date: today,
-    });
+  const attendance = await Attendance.findOne({
+    user: userId,
+    date: today,
+  });
 
-    if (!attendance || !attendance.checkInAt) {
-      return res.status(400).json({ message: "Not checked in" });
-    }
+  if (!attendance || !attendance.checkInAt) {
+    return res.status(400).json({ message: "Not checked in" });
+  }
 
-    if (attendance.checkOutAt) {
-      return res.status(400).json({ message: "Already checked out" });
-    }
+  if (attendance.checkOutAt) {
+    return res.status(400).json({ message: "Already checked out" });
+  }
+  const checkIn = DateTime.fromJSDate(attendance.checkInAt).setZone("Africa/Cairo");
+  const checkOut = now;
 
-    attendance.checkOutAt = now;
+  // attendance.checkOutAt = nowDate;
 
-    // Calculate total minutes
-    const totalMinutes = Math.floor(
-      (attendance.checkOutAt - attendance.checkInAt) / 60000
+  // Calculate total minutes
+  // const totalMinutes = Math.floor(
+  //   (attendance.checkOutAt - attendance.checkInAt) / 60000
+  // );
+  const totalMinutes = Math.floor(checkOut.diff(checkIn, "minutes").minutes);
+
+  // Convert to decimal hours
+  // const workHours = parseFloat((totalMinutes / 60).toFixed(2));
+  const workHours = parseFloat((totalMinutes / 60).toFixed(2));
+  attendance.workHours = totalMinutes;
+
+  // Early Leave
+  let early_leave_minutes = 0;
+  // if (now < shiftEnd) {
+  //   early_leave_minutes = Math.floor((shiftEnd - now) / 60000);
+  // }
+  if (checkOut < shiftEnd) {
+    early_leave_minutes = Math.floor(
+      shiftEnd.diff(checkOut, "minutes").minutes
     );
+  }
+  attendance.early_leave_minutes = early_leave_minutes;
 
-    // Convert to decimal hours
-    const workHours = parseFloat((totalMinutes / 60).toFixed(2));
-    attendance.workHours = workHours;
+  // Overtime
+  // if (workHours > shiftHours) {
+  //   attendance.overtimeMinutes = Math.floor(
+  //     (workHours - shiftHours) * 60
+  //   );
+  // }
+  const shiftMinutes = 7 * 60;
 
-    // Early Leave
-    let early_leave_minutes = 0;
-    if (now < shiftEnd) {
-      early_leave_minutes = Math.floor((shiftEnd - now) / 60000);
-    }
-    attendance.early_leave_minutes = early_leave_minutes;
+  attendance.overtimeMinutes = Math.max(0, totalMinutes - shiftMinutes);
 
-    // Overtime
-    if (workHours > shiftHours) {
-      attendance.overtimeMinutes = Math.floor(
-        (workHours - shiftHours) * 60
-      );
-    }
+  attendance.checkOutAt = checkOut.toJSDate();
+  await attendance.save();
 
-    await attendance.save();
-
-    res.json({
-      status:'success',
-      message: "Check-out successful",
-      workHours,
-      overtimeMinutes: attendance.overtimeMinutes,
-    });
+  res.json({
+    status: 'success',
+    message: "Check-out successful",
+    workHours: totalMinutes,
+    overtimeMinutes: attendance.overtimeMinutes,
+  });
 
 };
