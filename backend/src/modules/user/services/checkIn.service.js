@@ -1,16 +1,24 @@
 import Attendance from "../../../DB/models/attendance.model.js";
 import { asyncHandler } from "../../../utilities/error/error.js";
+import { DateTime } from "luxon";
 
 export const checkIn = asyncHandler(async (req, res, next) => {
   const userId = req.user._id;
-  const now = new Date();
+  const nowDate = new Date();
+  const now = DateTime.now().setZone("Africa/Cairo");
 
-  const today = now.toISOString().split("T")[0]; // YYYY-MM-DD
+  const today = nowDate.toISOString().split("T")[0]; // YYYY-MM-DD
   // const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
 
   // const shiftStart = new Date(`${today}T10:00:00`);
-  const shiftStart = new Date();
-  shiftStart.setHours(10, 0, 0, 0); // 10:00 AM local time
+  // const shiftStart = new Date();
+  // shiftStart.setHours(10, 0, 0, 0); // 10:00 AM local time
+  const shiftStart = now.set({
+  hour: 10,
+  minute: 0,
+  second: 0,
+  millisecond: 0,
+});
   const graceMinutes = 10;
 
   let attendance = await Attendance.findOne({
@@ -24,13 +32,15 @@ export const checkIn = asyncHandler(async (req, res, next) => {
 
   let lateMinutes = 0;
 
-  const lateLimit = new Date(shiftStart.getTime() + graceMinutes * 60000);
+  // const lateLimit = new Date(shiftStart.getTime() + graceMinutes * 60000);
+  const lateLimit = shiftStart.plus({ minutes: 10 });
 
   console.log(`now : ${now} , lateLimit : ${lateLimit}`);
   
   if (now > lateLimit) {
     
-    lateMinutes = Math.floor((now - shiftStart) / 60000);
+    // lateMinutes = Math.floor((now - shiftStart) / 60000);
+    lateMinutes = Math.floor(now.diff(shiftStart, "minutes").minutes);
   }
   console.log(`lateMinutes : ${lateMinutes}`);
 
