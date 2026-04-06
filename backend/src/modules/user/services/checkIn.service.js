@@ -5,7 +5,7 @@ export const checkIn = asyncHandler(async (req, res, next) => {
   const userId = req.user._id;
   const now = new Date();
 
-  // const today = now.toISOString().split("T")[0]; // YYYY-MM-DD
+  const today = now.toISOString().split("T")[0]; // YYYY-MM-DD
   // const today = new Date().toLocaleDateString('en-CA'); // YYYY-MM-DD
 
   // const shiftStart = new Date(`${today}T10:00:00`);
