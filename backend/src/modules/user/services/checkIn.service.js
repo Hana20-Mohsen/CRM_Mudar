@@ -26,7 +26,10 @@ export const checkIn = asyncHandler(async (req, res, next) => {
 
   const lateLimit = new Date(shiftStart.getTime() + graceMinutes * 60000);
 
+  console.log(`now : ${now} , lateLimit : ${lateLimit}`);
+  
   if (now > lateLimit) {
+    
     lateMinutes = Math.floor((now - shiftStart) / 60000);
   }
   console.log(`lateMinutes : ${lateMinutes}`);
