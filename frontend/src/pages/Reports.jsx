@@ -368,13 +368,13 @@ export default function Reports() {
             <h5 className="text-light fw-bold mb-2">{date}</h5>
             {records.map((a) => (
               <div key={a._id} className="card mb-3 shadow-sm p-3">
-                <h5 className="fw-bold text-primary mb-2">{a.user?.name}</h5>
-                <p><strong style={{ color: "#478778" }}>In:</strong> {new Date(a.checkInAt).toLocaleString()}</p>
-                <p><strong style={{ color: "red" }}>Out:</strong> {a.checkOutAt ? new Date(a.checkOutAt).toLocaleString() : "Still working"}</p>
-                <p><strong className="text-warning">Late:</strong> {formatHours(a.late_minutes)}</p>
-                <p><strong className="text-danger">Early Leave:</strong> {formatHours(a.early_leave_minutes)}</p>
-                <p><strong className="text-primary">Overtime:</strong> {formatHours(a.overtimeMinutes)}</p>
-                <p><strong className="text-success">Work Hours:</strong> {formatHours(a.workHours)}</p>
+                <h5 className="fw-bold text-dark mb-2">{a.user?.name}</h5>
+                <p><strong className="text-dark">In:</strong> {new Date(a.checkInAt).toLocaleString()}</p>
+                <p><strong className="text-dark">Out:</strong> {a.checkOutAt ? (new Date(a.checkOutAt).toLocaleString()) : (<span className="text-success fw-semibold">Still working</span>)}</p>
+                <p><strong className="text-dark">Late:</strong> {formatHours(a.late_minutes)}</p>
+                <p><strong className="text-dark">Early Leave:</strong> {formatHours(a.early_leave_minutes)}</p>
+                <p><strong className="text-dark">Overtime:</strong> {formatHours(a.overtimeMinutes)}</p>
+                <p><strong className="text-dark">Work Hours:</strong> {formatHours(a.workHours)}</p>
               </div>
             ))}
           </div>
