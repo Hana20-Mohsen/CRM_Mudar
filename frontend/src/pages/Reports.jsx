@@ -310,7 +310,7 @@ export default function Reports() {
         </div>
 
         <div className="col-12 col-md-3 d-flex gap-2 mt-2 mt-md-0 d-md-flex align-items-end">
-          <button onClick={exportExcel} className="btn btn-success w-100  h-75">
+          <button onClick={exportExcel} className="btn btn-success w-100">
             Export Excel
           </button>
         </div>
