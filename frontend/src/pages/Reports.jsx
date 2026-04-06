@@ -341,8 +341,12 @@ export default function Reports() {
                       <td>{new Date(a.checkInAt).toLocaleString()}</td>
                       <td>
                         {a.checkOutAt
-                          ? new Date(a.checkOutAt).toLocaleString()
-                          : "Still working"}
+                          ? (new Date(a.checkOutAt).toLocaleString())
+                          : (
+                            <span className="text-success fw-semibold">
+                              Still working
+                            </span>
+                          )}
                       </td>
                       <td>{formatHours(a.late_minutes)}</td>
                       <td>{formatHours(a.early_leave_minutes)}</td>
