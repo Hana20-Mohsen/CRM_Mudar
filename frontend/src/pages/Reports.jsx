@@ -279,6 +279,7 @@ export default function Reports() {
       {/* 🔍 Filters */}
       <div className="row mb-4 g-2">
         <div className="col-12 col-md-3">
+          <label htmlFor="search" className="text-light">username...</label>
           <input
             type="text"
             placeholder="Search by user..."
@@ -289,6 +290,7 @@ export default function Reports() {
         </div>
 
         <div className="col-6 col-md-3">
+          <label className="text-light" htmlFor="start date">Start Date</label>
           <input
             type="date"
             className="form-control"
@@ -298,6 +300,7 @@ export default function Reports() {
         </div>
 
         <div className="col-6 col-md-3">
+          <label className="text-light" htmlFor="end date">End Date</label>
           <input
             type="date"
             className="form-control"
@@ -306,8 +309,8 @@ export default function Reports() {
           />
         </div>
 
-        <div className="col-12 col-md-3 d-flex gap-2 mt-2 mt-md-0">
-          <button onClick={exportExcel} className="btn btn-success w-100">
+        <div className="col-12 col-md-3 d-flex gap-2 mt-2 mt-md-0 d-md-flex align-items-end">
+          <button onClick={exportExcel} className="btn btn-success w-100  h-75">
             Export Excel
           </button>
         </div>
@@ -327,7 +330,7 @@ export default function Reports() {
                     <th>Out</th>
                     <th>Late</th>
                     <th>Early</th>
-                    <th>OT</th>
+                    <th>Over_Time</th>
                     <th>Work_Hours</th>
                   </tr>
                 </thead>
