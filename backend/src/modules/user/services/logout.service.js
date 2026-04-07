@@ -32,7 +32,7 @@ export const logout = async (req, res) => {
   // const checkOut = now;
   // --------------------- test -------------------
   const checkOut = now.set({
-  hour: 18,
+  hour: 16,
   minute: 0,
   second: 0,
   millisecond: 0,
