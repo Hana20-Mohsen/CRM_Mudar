@@ -4,6 +4,8 @@ import { AuthContext } from "../context/AuthContext.jsx";
 console.log(`back url : ${import.meta.env.VITE_API_URL}`);
 
 const user= JSON.parse(localStorage.getItem("user"));
+console.log(`user role from socket : ${user}`);
+
 //  transports:["websocket"],
 const socket = io(`${import.meta.env.VITE_API_URL}`, {
     transports: ["polling", "websocket"],
