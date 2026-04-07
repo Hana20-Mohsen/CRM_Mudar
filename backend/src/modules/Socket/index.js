@@ -23,7 +23,7 @@ const initSocket = (server) => {
 
  try{
     
-  const decoded = verifyToken({token ,signature:process.env.TOKEN_SIGNATURE||process.env.TOKEN_SIGNATURE_ADMIN  })
+  const decoded = verifyToken({token ,signature:process.env.TOKEN_SIGNATURE_ADMIN|| process.env.TOKEN_SIGNATURE  })
 
   socket.user = decoded
 //   console.log(v);
