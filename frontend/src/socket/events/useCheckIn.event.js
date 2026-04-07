@@ -7,7 +7,7 @@ const useCheckIn = () => {
     useEffect(() => {
         socket.on("checkedIn", (userId) => {
             toast.success(`User ${userId} checked in!`);
-            console.log("Socket received:", userId);
+            console.log("Received on:", socket.id, userId);
             queryClient.invalidateQueries({
                 queryKey: ['getAttendance'],
             });
