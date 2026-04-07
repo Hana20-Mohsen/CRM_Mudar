@@ -1,17 +1,11 @@
-import { useEffect } from "react";
+import { use, useEffect } from "react";
 import socket from "./socket";
 import { toast } from "react-toastify";
-// import useUpdateProductStock from "./events/updateProductsQuantity.event.js";
-// import useUpdateProduct from "./events/useUpdateProduct.js";
-// import useAddProduct from "./events/useAddProduct.js";
-// import useDeleteProduct from "./events/useDeleteProduct.js";
+import useCheckIn from "./events/useCheckIn.event.js";
 export default function useSocketEvents() {
 
   // ✅ CALL HOOK HERE (top level)
-//   useUpdateProductStock();
-//   useUpdateProduct();
-//   useAddProduct();
-//   useDeleteProduct()
+useCheckIn();
   useEffect(() => {
     socket.on("connect",()=>{
   console.log("connected:",socket.id)

@@ -61,7 +61,8 @@ export const checkIn = asyncHandler(async (req, res, next) => {
   }
 
   await attendance.save();
-  io.emit("attendanceUpdate", { userId, status: "checkedIn", lateMinutes });
+
+  io.emit("checkedIn", { userId });
   res.json({
     message: "Check-in successful",
     lateMinutes,

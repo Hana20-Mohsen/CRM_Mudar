@@ -1,197 +1,9 @@
 
-// import React, { useContext, useEffect, useState } from "react";
-// import { AttendanceContext } from "../context/AttendenceContext";
-// import { useOutletContext } from "react-router-dom";
-// import styles from "./styles.module.css";
-
-// import * as XLSX from "xlsx";
-// import { saveAs } from "file-saver";
-// import jsPDF from "jspdf";
-// import "jspdf-autotable";
-
-// export default function Reports() {
-//   const { toggleSidebar } = useOutletContext();
-//   const { getAttendance } = useContext(AttendanceContext);
-
-//   const [attendance, setAttendance] = useState([]);
-//   const [search, setSearch] = useState("");
-//   const [fromDate, setFromDate] = useState("");
-//   const [toDate, setToDate] = useState("");
-
-//   useEffect(() => {
-//     getAttendance().then(setAttendance);
-//   }, []);
-
-//   const formatHours = (minutes = 0) => {
-//     const h = Math.floor(minutes / 60);
-//     const m = minutes % 60;
-//     return `${h}h ${m}m`;
-//   };
-
-//   // 🔍 Filter logic
-//   const filteredAttendance = attendance.filter((a) => {
-//     const nameMatch = a.user?.name
-//       ?.toLowerCase()
-//       .includes(search.toLowerCase());
-
-//     const recordDate = new Date(a.date).toISOString().split("T")[0];
-
-//     const fromMatch = fromDate ? recordDate >= fromDate : true;
-//     const toMatch = toDate ? recordDate <= toDate : true;
-
-//     return nameMatch && fromMatch && toMatch;
-//   });
-
-//   // 📅 Group by date
-//   const groupByDate = (data) => {
-//     return data.reduce((acc, record) => {
-//       const date = new Date(record.date).toLocaleDateString("en-CA");
-//       if (!acc[date]) acc[date] = [];
-//       acc[date].push(record);
-//       return acc;
-//     }, {});
-//   };
-
-//   const groupedEntries = Object.entries(groupByDate(filteredAttendance)).sort(
-//     (a, b) => new Date(b[0]) - new Date(a[0])
-//   );
-
-//   // 📁 Export Excel
-//   const exportExcel = () => {
-//     const data = filteredAttendance.map((a) => ({
-//       Name: a.user?.name,
-//       Date: new Date(a.date).toLocaleDateString(),
-//       CheckIn: new Date(a.checkInAt).toLocaleString(),
-//       CheckOut: a.checkOutAt
-//         ? new Date(a.checkOutAt).toLocaleString()
-//         : "Still working",
-//       Late: formatHours(a.late_minutes),
-//       EarlyLeave: formatHours(a.early_leave_minutes),
-//       Overtime: formatHours(a.overtimeMinutes),
-//       Work: formatHours(a.workHours),
-//     }));
-
-//     const worksheet = XLSX.utils.json_to_sheet(data);
-//     const workbook = XLSX.utils.book_new();
-//     XLSX.utils.book_append_sheet(workbook, worksheet, "Attendance");
-
-//     const excelBuffer = XLSX.write(workbook, {
-//       bookType: "xlsx",
-//       type: "array",
-//     });
-
-//     const file = new Blob([excelBuffer], { type: "application/octet-stream" });
-//     saveAs(file, "attendance.xlsx");
-//   };
-
-//   // 📄 Export PDF
-
-
-//   return (
-//     <div className={`container-fluid py-4 min-vh-100 ${styles.bg_gredient}`}>
-
-//       <i
-//         className={`${styles.toggle_btn} fa-solid fa-bars me-3 fs-2 mb-3 text-light`}
-//         onClick={toggleSidebar}
-//       ></i>
-
-//       <h2 className="mb-3 fw-bold text-light">Attendance Reports</h2>
-
-//       {/* 🔍 Filters */}
-//       <div className="row mb-4 g-2">
-
-//         <div className="col-md-3">
-//           <input
-//             type="text"
-//             placeholder="Search by user..."
-//             className="form-control"
-//             value={search}
-//             onChange={(e) => setSearch(e.target.value)}
-//           />
-//         </div>
-
-//         <div className="col-md-3">
-//           <input
-//             type="date"
-//             className="form-control"
-//             value={fromDate}
-//             onChange={(e) => setFromDate(e.target.value)}
-//           />
-//         </div>
-
-//         <div className="col-md-3">
-//           <input
-//             type="date"
-//             className="form-control"
-//             value={toDate}
-//             onChange={(e) => setToDate(e.target.value)}
-//           />
-//         </div>
-
-//         <div className="col-md-3 d-flex gap-2">
-//           <button onClick={exportExcel} className="btn btn-success w-100">
-//             Export Excel
-//           </button>
-// {/* 
-//           <button onClick={exportPDF} className="btn btn-danger w-100">
-//             Export PDF
-//           </button> */}
-//         </div>
-//       </div>
-
-//       {/* 📅 Data */}
-//       {groupedEntries.map(([date, records]) => (
-//         <div key={date} className="mb-4">
-
-//           <h4 className="text-light fw-bold mb-3">{date}</h4>
-
-//           <div className={`card shadow-sm ${styles.card}`}>
-//             <table className="table table-hover mb-0">
-//               <thead>
-//                 <tr>
-//                   <th>Name</th>
-//                   <th>In</th>
-//                   <th>Out</th>
-//                   <th>Late</th>
-//                   <th>Early</th>
-//                   <th>OT</th>
-//                   <th>Work</th>
-//                 </tr>
-//               </thead>
-
-//               <tbody>
-//                 {records.map((a) => (
-//                   <tr key={a._id}>
-//                     <td>{a.user?.name}</td>
-
-//                     <td>{new Date(a.checkInAt).toLocaleString()}</td>
-
-//                     <td>
-//                       {a.checkOutAt
-//                         ? new Date(a.checkOutAt).toLocaleString()
-//                         : "Still working"}
-//                     </td>
-
-//                     <td>{formatHours(a.late_minutes)}</td>
-//                     <td>{formatHours(a.early_leave_minutes)}</td>
-//                     <td>{formatHours(a.overtimeMinutes)}</td>
-//                     <td>{formatHours(a.workHours)}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         </div>
-//       ))}
-
-//     </div>
-//   );
-// }
-
 import React, { useContext, useEffect, useState } from "react";
 import { AttendanceContext } from "../context/AttendenceContext";
 import { useOutletContext } from "react-router-dom";
 import styles from "./styles.module.css";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
@@ -200,14 +12,22 @@ export default function Reports() {
   const { toggleSidebar } = useOutletContext();
   const { getAttendance } = useContext(AttendanceContext);
 
-  const [attendance, setAttendance] = useState([]);
+  // const [attendance, setAttendance] = useState([]);
   const [search, setSearch] = useState("");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
 
+   let {data:attendance , isError , isLoading , isFetching}=  useQuery({
+    queryKey: ["getAttendance"],
+    queryFn: getAttendance,
+  });
   useEffect(() => {
-    getAttendance().then(setAttendance);
-  }, []);
+    console.log(attendance);
+    
+    // getAttendance().then(setAttendance);
+    // console.log(attendance);
+    
+  }, [attendance]);
 
   const formatHours = (minutes = 0) => {
     const h = Math.floor(minutes / 60);
@@ -216,7 +36,7 @@ export default function Reports() {
   };
 
   // 🔍 Filter attendance
-  const filteredAttendance = attendance.filter((a) => {
+  const filteredAttendance = (attendance || []).filter((a) => {
     const nameMatch = a.user?.name
       ?.toLowerCase()
       .includes(search.toLowerCase());
@@ -265,6 +85,8 @@ export default function Reports() {
     });
     saveAs(new Blob([excelBuffer], { type: "application/octet-stream" }), "attendance.xlsx");
   };
+  if (isLoading) return <div>Loading...</div>;
+if (isError) return <div>Error loading data</div>;
 
   return (
     <div className={`container-fluid py-4 min-vh-100 `}>
