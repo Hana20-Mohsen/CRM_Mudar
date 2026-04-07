@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext.jsx";
 console.log(`back url : ${import.meta.env.VITE_API_URL}`);
 
-const user= localStorage.getItem("user")
+const user= JSON.parse(localStorage.getItem("user"))
 console.log(`user role from socket : ${user}`);
 
 //  transports:["websocket"],
