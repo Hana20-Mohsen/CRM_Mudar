@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import socket from "../socket.js";
 import { useQueryClient } from "@tanstack/react-query";
-
+import { toast } from "react-toastify";
 const useCheckIn = () => {
     const queryClient = useQueryClient();
     useEffect(() => {
         socket.on("checkedIn", (userId) => {
+            toast.success(`User ${userId} checked in!`);
             console.log("Socket received:", userId);
             queryClient.invalidateQueries({
                 queryKey: ['getAttendance'],
