@@ -13,7 +13,6 @@ const initSocket = (server) => {
  })
   setSocketInstance(io)
   io.use((socket , next)=>{
-
  const token = socket.handshake.auth.token
  console.log(`token from socket : ` , token);
  
@@ -24,7 +23,7 @@ const initSocket = (server) => {
 
  try{
     
-  const decoded = verifyToken({token ,signature:process.env.TOKEN_SIGNATURE })
+  const decoded = verifyToken({token ,signature:process.env.TOKEN_SIGNATURE||process.env.TOKEN_SIGNATURE_ADMIN  })
 
   socket.user = decoded
 //   console.log(v);
