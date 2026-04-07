@@ -41,6 +41,9 @@ const initSocket = (server) => {
 
   console.log("user connected:",socket.id)
 
+  socket.on("connect_error", (err) => {
+  console.log("❌ Connection error:", err.message);
+});
 
   socket.on("disconnect",(reason)=>{
    console.log("user disconnected")
