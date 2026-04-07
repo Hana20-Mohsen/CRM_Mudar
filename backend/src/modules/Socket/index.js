@@ -15,6 +15,7 @@ const initSocket = (server) => {
   io.use((socket , next)=>{
  const token = socket.handshake.auth.token
  console.log(`token from socket : ` , token);
+ console.log(`user role from socket : ` , socket.handshake.auth.role);
  
 
 //  if(!token){
