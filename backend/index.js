@@ -1,16 +1,19 @@
 
 import bootstrap from './src/app.controller.js';
 import express from 'express'
+import http from 'http'
+import initSocket from './src/modules/Socket/index.js';
+// import { setServers } from "node:dns/promises";
 const app=express();
 const port =8000;
-import { setServers } from "node:dns/promises";
 
-setServers(["1.1.1.1", "8.8.8.8"]);
+const server = http.createServer(app)
+// setServers(["1.1.1.1", "8.8.8.8"]);
 bootstrap(app , express)
+initSocket(server)
 
 
-
-app.listen(port , ()=>{console.log(`listening on ${port}`);
+server.listen(port , ()=>{console.log(`listening on ${port}`);
 })
 
 // import bootstrap from './src/app.controller.js';

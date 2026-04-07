@@ -19,6 +19,7 @@ import { io } from "socket.io-client";
 import Attendance from "./pages/Attendance.jsx";
 import MonthlyReport from "./pages/MonthlyReport.jsx";
 const API_URL = import.meta.env.VITE_API_URL;
+import useSocketEvents from "./socket/useSocketEvents.js";
 
 // const socket = io("http://localhost:8000");
 
@@ -30,7 +31,7 @@ export default function App() {
   const [contacts, setContacts] = useState(dumyData.contacts);
   const [deals, setDeals] = useState(dumyData.deals);
 
-  
+  useSocketEvents();
 //  useEffect(() => {
 //     // استقبال الرسالة من السيرفر
 //     socket.on('server-notification', (data) => {

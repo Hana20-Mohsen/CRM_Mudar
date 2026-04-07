@@ -1,8 +1,9 @@
 import Attendance from "../../../DB/models/attendance.model.js";
 import { asyncHandler } from "../../../utilities/error/error.js";
 import { DateTime } from "luxon";
-
+import { getIO } from "../../Socket/index.js";
 export const checkIn = asyncHandler(async (req, res, next) => {
+  const io = getIO();
   const userId = req.user._id;
   const nowDate = new Date();
   const now = DateTime.now().setZone("Africa/Cairo");
@@ -60,7 +61,7 @@ export const checkIn = asyncHandler(async (req, res, next) => {
   }
 
   await attendance.save();
-
+  io.emit("attendanceUpdate", { userId, status: "checkedIn", lateMinutes });
   res.json({
     message: "Check-in successful",
     lateMinutes,
