@@ -29,14 +29,14 @@ export const logout = async (req, res) => {
     return res.status(400).json({ message: "Already checked out" });
   }
   const checkIn = DateTime.fromJSDate(attendance.checkInAt).setZone("Africa/Cairo");
-  // const checkOut = now;
+  const checkOut = now;
   // --------------------- test -------------------
-  const checkOut = now.set({
-  hour: 16,
-  minute: 0,
-  second: 0,
-  millisecond: 0,
-});
+//   const checkOut = now.set({
+//   hour: 16,
+//   minute: 0,
+//   second: 0,
+//   millisecond: 0,
+// });
 // ------------------------test --------------------
 
   // attendance.checkOutAt = nowDate;
