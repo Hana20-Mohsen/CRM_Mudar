@@ -6,11 +6,15 @@ import { toast } from "react-toastify";
 const useUpdateTask = () => {
     const queryClient = useQueryClient();
     const boardId= localStorage.getItem('boardId')
+    console.log(`boardId from useUpdateTask: ${boardId}`);
+    
     useEffect(()=>{
+        
         socket.on("taskUpdated", (taskId) => {
-            toast.info(`Task ${taskId} has been updated!`);
-            console.log("Received on:", socket.id, taskId);
-            queryClient.refetchQueries(["lists", boardId]);
+            console.log(`---------------------------- useEffect in socket -----------`);
+            console.log("Received on:", taskId);
+            toast.info(`Task has been updated!`);
+            queryClient.invalidateQueries(["lists", boardId]);
         })
         return () => {
             socket.off("taskUpdated");

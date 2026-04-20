@@ -241,7 +241,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, onUpdate, onDelete }) => {
 
                                     <div className={`d-flex gap-2`}>
                                         <button className={`btn btn-primary  ${styles.btn_main}`} onClick={handleSave}>
-                                            <FontAwesomeIcon icon={faSave} className={`me-2`} />
+                                            <FontAwesomeIcon icon={faSave} className={`me-2 `} />
                                             Save Changes
                                         </button>
                                     </div>

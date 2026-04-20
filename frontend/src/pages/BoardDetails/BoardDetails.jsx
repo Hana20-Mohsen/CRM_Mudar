@@ -107,7 +107,7 @@ export default function BoardDetails() {
   const handleUpdateTask = async (taskId, updatedData) => {
     try {
       await EditTasks(taskId, updatedData);
-      toast.success("Task updated successfully");
+      // toast.success("Task updated successfully");
       setIsModalOpen(false);
       // Invalidate lists query to refresh data
       queryClient.invalidateQueries(["lists", data?._id]);

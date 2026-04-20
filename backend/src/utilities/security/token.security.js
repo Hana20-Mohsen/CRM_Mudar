@@ -9,7 +9,7 @@ export const generateToken=({payload={} , signature=process.env.TOKEN_SIGNATURE 
 }
 
 export const verifyToken=({token='' , signature=process.env.TOKEN_SIGNATURE})=>{
-    console.log(`we use signature: `, signature);
+    // console.log(`we use signature: `, signature);
     
     const decoded= jwt.verify(token , signature)
     return decoded
