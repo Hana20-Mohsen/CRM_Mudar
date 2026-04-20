@@ -55,6 +55,14 @@ export default function BoardDetails() {
     queryFn: () => getListsByBoardId(data._id),
     enabled: !!data?._id,
   })
+    socket.on("taskUpdated", (updatedTask) => {
+    queryClient.setQueryData(["lists", data?._id], (old) => {
+      return old.map(task =>
+        task.id === updatedTask.id ? updatedTask : task
+      );
+    });
+  });
+  
   const { data: assignedTasksListsData } = useQuery({
     queryKey: ["assignedTasks", data?._id],
     queryFn: () =>

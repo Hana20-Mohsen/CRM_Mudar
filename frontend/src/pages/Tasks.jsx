@@ -6,8 +6,9 @@ import TaskDetailModal from "../components/TaskDetailModal";
 import { toast } from "react-toastify";
 import { useOutletContext } from "react-router-dom";
 import styles from './styles.module.css'
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient , useMutation } from "@tanstack/react-query";
 function TasksPage() {
+  console.log('------------------------------------- enter tasks 1 --------------------------');
   const { toggleSidebar } = useOutletContext();
   const queryClient = useQueryClient();
   const emptyTask = {
@@ -23,9 +24,22 @@ function TasksPage() {
     queryKey: ["tasks"],
     queryFn: getTasks,
   });
+
     useEffect(() => {
-      console.log(tasks);
+      console.log('------------------------------------- enter tasks --------------------------');
+      
+      console.log(` TASKS in useEffect:`, tasks);
     }, []);
+
+      const updateTaskMutation = useMutation({
+    mutationFn: ({ id, data }) => EditTasks(id, data),
+    onSuccess:  async() => {
+      toast.success("Task updated successfully ✅");
+      await queryClient.invalidateQueries({queryKey: ["tasks"]});
+      queryClient.refetchQueries({ queryKey: ["tasks"] });
+  onClose();
+    },
+  });
   // State for Modal and Search
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
@@ -46,7 +60,7 @@ function TasksPage() {
     try {
       if (editing) {
         await EditTasks(editing._id, formData);
-        toast.success("Task updated successfully ✅");
+         toast.success("Task updated successfully ✅");
       } else {
         await AddTask(formData);
         toast.success("Task added successfully 🎉");
