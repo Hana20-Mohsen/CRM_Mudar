@@ -40,7 +40,11 @@ const initSocket = (server) => {
  io.on("connection",(socket)=>{
 
   console.log("user connected:",socket.id)
-
+  socket.on("joinBoard", (boardId) => {
+    socket.join(boardId);
+    console.log(`user joined board ${boardId}`);
+    
+  });
   socket.on("connect_error", (err) => {
   console.log("❌ Connection error:", err.message);
 });

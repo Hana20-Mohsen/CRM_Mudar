@@ -15,6 +15,7 @@ import { TailSpin } from 'react-loader-spinner'
 import AssignTaskModal from "../../layout/AssignTaskModal.jsx";
 import AssignedTasksLists from "../../layout/AssignedTasksLists.jsx";
 import { useOutletContext } from "react-router-dom";
+import socket from "../../socket/socket.js";
 
 export default function BoardDetails() {
   const { id } = useParams();
@@ -79,7 +80,7 @@ export default function BoardDetails() {
 
   useEffect(() => {
     console.log(data);
-
+    socket.emit("joinBoard", data?._id);
     console.log(assignedTasksListsData);
     let role = getUserRole();
     if (role) {

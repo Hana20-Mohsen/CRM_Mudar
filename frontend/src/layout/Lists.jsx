@@ -156,6 +156,22 @@ const moveTask = (taskId, newListId, oldListId) => {
       taskId
     });
   };
+
+    /* ===================== PROGRESS CALCULATION ===================== */
+  const totalTasks = list.tasks.length;
+
+  const completedTasks = list.tasks.filter(
+    (task) => task.status === "done"
+  ).length;
+
+  const progress =
+    totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
+
+  const getProgressColor = () => {
+    if (progress === 100) return "#28a745";
+    if (progress > 50) return "#ffc107";
+    return "#dc3545";
+  };
   return (
     <div className={`${styles.list} position-relative `}>
       <div className={`${styles.list_header}`}>
@@ -224,7 +240,29 @@ const moveTask = (taskId, newListId, oldListId) => {
 
       {/* ------------------------- end edit lists ---------------------- */}
       {/* --------- end list options menu ---------- */}
+      {/* -------------------------- start progress bar ----------------------- */}
 
+    {/* PROGRESS BAR */}
+      <div className="px-2 mb-2">
+        <div className="d-flex justify-content-between small mb-1">
+          <span>Progress</span>
+          <span>{progress}%</span>
+        </div>
+
+        <div style={{
+          height: "6px",
+          background: "#e0e0e0",
+          borderRadius: "6px",
+          overflow: "hidden"
+        }}>
+          <div style={{
+            width: `${progress}%`,
+            height: "100%",
+            background: getProgressColor(),
+            transition: "width 0.3s ease"
+          }} />
+        </div>
+      </div>
 <div
   className={`${styles.tasks} flex-grow-1`}
   style={{ minHeight: "50px" }}
