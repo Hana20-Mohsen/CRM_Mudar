@@ -73,10 +73,10 @@ const handleEditChange = (e) => {
           {
             isDeleteBoard && (
               <div className={`${styles.deleteCheckHolder} z-2 position-fixed start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center`} >
-                <div className={`p-5 bg-light rounded-3`}>
-                  <h5 className="text-center mb-4">Are You Sure ?  </h5>
-                  <button className={`py-2 px-5 rounded-3 border-0 me-2 bg-danger text-white`} onClick={() => deleteBoardMutation.mutate()}>Delete</button>
-                  <button className={`py-2 px-5 rounded-3 border-1  me-2`} onClick={() => setDeletedBoard(false)}>Cancel</button>
+                <div className={`${styles.formHolder }  p-5 bg-light  rounded-3`}>
+                  <h5 className="text-center mb-4 text-dark">Are You Sure ?  </h5>
+                  <button className={`py-2 px-2 px-md-5  rounded-3 border-0 me-2 bg-danger text-white`} onClick={() => deleteBoardMutation.mutate()}>Delete</button>
+                  <button className={`py-2 px-2 px-md-5 rounded-3 border-1  me-2`} onClick={() => setDeletedBoard(false)}>Cancel</button>
                 </div>
               </div>
             )
@@ -85,9 +85,9 @@ const handleEditChange = (e) => {
                 {/* -------------------------start edit lists ---------------- */}
  {
   isUpdateBoard && (
-    <div className={`${styles.deleteCheckHolder} z-2 position-fixed start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center`}>
+    <div className={`${styles.deleteCheckHolder}  z-2 position-fixed start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center`}>
       
-      <div className="p-4 bg-light rounded-3 w-50">
+      <div className={`${styles.formHolder} p-4 bg-light rounded-3 w-50`}>
         <h4 className="mb-3 text-center">Edit Board</h4>
 
         <input

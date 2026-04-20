@@ -124,14 +124,14 @@ export default function Boards() {
           className={`${styles.formHolder} z-2 position-absolute top-0 bottom-0 start-0 end-0 d-flex justify-content-center align-items-center`}
         >
           <div
-            className={`${styles.form} container bg-dark w-50 px-3 py-5 rounded-5`}
+            className={`${styles.form} container   bg-dark w-50 px-3 py-5 rounded-5`}
           >
             {/* -----------------------------close form -------------------------------- */}
             <i
               onClick={() => setShowForm(false)}
               className={`${styles.closeIcon} fa-regular fa-circle-xmark text-danger fs-3 position-absolute`}
             ></i>
-            <form onSubmit={Register.handleSubmit} className="my-4 text-center">
+            <form onSubmit={Register.handleSubmit} className="my-4 text-center ">
               {/*-------------------------------------------  start  title -------------------------------*/}
               <input
                 onBlur={Register.handleBlur}
