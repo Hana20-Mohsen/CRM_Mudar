@@ -2,10 +2,12 @@ import { use, useEffect } from "react";
 import socket from "./socket";
 import { toast } from "react-toastify";
 import useCheckIn from "./events/useCheckIn.event.js";
+import useUpdateTask from "./events/useUpdateTask.event.js";
 export default function useSocketEvents() {
 
   // ✅ CALL HOOK HERE (top level)
 useCheckIn();
+useUpdateTask();
   useEffect(() => {
     socket.on("connect",()=>{
   console.log("connected:",socket.id)

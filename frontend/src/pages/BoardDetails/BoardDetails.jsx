@@ -55,14 +55,14 @@ export default function BoardDetails() {
     queryFn: () => getListsByBoardId(data._id),
     enabled: !!data?._id,
   })
-    socket.on("taskUpdated", (updatedTask) => {
-    queryClient.setQueryData(["lists", data?._id], (old) => {
-      return old.map(task =>
-        task.id === updatedTask.id ? updatedTask : task
-      );
-    });
-  });
-  
+  //   socket.on("taskUpdated", (updatedTask) => {
+  //   queryClient.setQueryData(["lists", data?._id], (old) => {
+  //     return old.map(task =>
+  //       task.id === updatedTask.id ? updatedTask : task
+  //     );
+  //   });
+  // });
+
   const { data: assignedTasksListsData } = useQuery({
     queryKey: ["assignedTasks", data?._id],
     queryFn: () =>
@@ -71,7 +71,8 @@ export default function BoardDetails() {
         : getAssignedTasksByEmpId(data?._id),
     enabled: !!userRole && !!data?._id,
   });
-
+ const boardId= data?._id;
+ localStorage.setItem("boardId", boardId);
   const addListMutation = useMutation({
     mutationFn: (newList) => createList(newList), // Ensure this matches your API helper
     onSuccess: () => {
