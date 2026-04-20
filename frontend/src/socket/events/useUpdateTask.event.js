@@ -13,7 +13,7 @@ const useUpdateTask = () => {
         socket.on("taskUpdated", (taskId) => {
             console.log(`---------------------------- useEffect in socket -----------`);
             console.log("Received on:", taskId);
-            toast.info(`Task has been updated!`);
+            // toast.info(`Task has been updated!`);
             queryClient.invalidateQueries(["lists", boardId]);
         })
         return () => {
