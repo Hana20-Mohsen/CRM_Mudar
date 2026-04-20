@@ -7,8 +7,16 @@ const initSocket = (server) => {
     console.log('init socket');
     
  io = new Server(server,{
-  cors:{
-   origin:"*"
+  // cors:{
+  //  origin:"*"
+  // }
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "https://crm-mudar.vercel.app"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
   }
  })
   setSocketInstance(io)

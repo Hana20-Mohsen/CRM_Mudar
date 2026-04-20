@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext , useEffect } from "react";
 import { TaskContext } from "../context/TaskContext";
 import Modal from "../common/Modal";
 import TaskForm from "../forms/TaskForm";
@@ -6,8 +6,10 @@ import TaskDetailModal from "../components/TaskDetailModal";
 import { toast } from "react-toastify";
 import { useOutletContext } from "react-router-dom";
 import styles from './styles.module.css'
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 function TasksPage() {
   const { toggleSidebar } = useOutletContext();
+  const queryClient = useQueryClient();
   const emptyTask = {
     title: '',
     status: 'Pending',
@@ -15,8 +17,15 @@ function TasksPage() {
     description: '',
     dueDate: ''
   };
-  const { tasks, AddTask, EditTasks, DeleteTasks, getTasks, setTasks } = useContext(TaskContext);
+  const { AddTask, EditTasks, DeleteTasks, getTasks, setTasks } = useContext(TaskContext);
 
+  const { data: tasks, error, isLoading } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: getTasks,
+  });
+    useEffect(() => {
+      console.log(tasks);
+    }, []);
   // State for Modal and Search
   const [search, setSearch] = useState('');
   const [open, setOpen] = useState(false);
@@ -92,8 +101,8 @@ function TasksPage() {
   return (
     <div className="container-fluid py-4 bg-light min-vh-100 ">
       <i class={`${styles.toggle_btn} fa-solid fa-bars me-3 fs-2 mb-3`}
-              onClick={toggleSidebar}
-            ></i>
+        onClick={toggleSidebar}
+      ></i>
       {/* Header Section */}
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
@@ -225,7 +234,7 @@ function TasksPage() {
 
       {/* New Trello-like Detail Modal */}
       <TaskDetailModal
-     
+
         isOpen={isDetailModalOpen}
         onClose={() => setIsDetailModalOpen(false)}
         task={selectedTask}

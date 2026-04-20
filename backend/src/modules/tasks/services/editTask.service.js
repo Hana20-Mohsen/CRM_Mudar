@@ -1,6 +1,6 @@
 import Tasks from "../../../DB/models/tasks.model.js";
 import { asyncHandler } from "../../../utilities/error/error.js";
-import {getIo} from '../../Socket/index.js';
+import { getSocketInstance } from "../../Socket/socketManager.js";
 const editTask = asyncHandler(async (req, res, next) => {
   const io = getIo();
   const { id } = req.params;

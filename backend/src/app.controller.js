@@ -34,7 +34,7 @@ const corsOptions = {
       "https://crm-mudar-hanas-projects-30a8b9bd.vercel.app",
       "https://crm-mudar.vercel.app",
       'https://crm-mudar-git-main-hanas-projects-30a8b9bd.vercel.app',
-      'https://crm-mudar-jk4nw6ze1-hanas-projects-30a8b9bd.vercel.app/'
+      'https://crm-mudar-jk4nw6ze1-hanas-projects-30a8b9bd.vercel.app'
     ];
 
     if (!origin || allowedOrigins.includes(origin)) {

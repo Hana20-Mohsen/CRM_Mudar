@@ -63,6 +63,7 @@ const TaskProvider = ({ children }) => {
         },
       });
       setTasks(res.data.tasks || []);
+      return res.data.tasks || [];
     } catch (err) {
       console.error("Error fetching tasks:", err);
     }
