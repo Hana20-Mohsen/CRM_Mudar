@@ -34,8 +34,8 @@ const editTask = asyncHandler(async (req, res, next) => {
   }
   const list= await Lists.findById(updatedTask.listId);
   let BoardId= list.boardId.toString();
-  // .to(data.boardId)
-  io.to(BoardId).emit("taskUpdated", updatedTask._id);
+  // .to(BoardId)
+  io.emit("taskUpdated", updatedTask._id);
   return res.status(200).json({
     message: "Task updated successfully",
     updatedTask
