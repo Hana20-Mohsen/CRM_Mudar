@@ -2,6 +2,7 @@
 import Tasks from "../../../DB/models/tasks.model.js";
 import { asyncHandler } from "../../../utilities/error/error.js";
 import { getSocketInstance } from "../../Socket/socketManager.js";
+import Lists from "../../../DB/models/lists.model.js";
 import fs from 'fs';
 const editTask = asyncHandler(async (req, res, next) => {
   console.log(`----------------------- edit task ----------------------`);
@@ -31,12 +32,10 @@ const editTask = asyncHandler(async (req, res, next) => {
   if (!updatedTask) {
     return res.status(404).json({ message: "Task not found" });
   }
-  console.log(`Updated task: `, updatedTask);
-  
-  const data = JSON.parse(fs.readFileSync("data.json"));
-  console.log(`data from file : `, data.boardId);
+  const list= await Lists.findById(updatedTask.listId);
+  let BoardId= list.boardId.toString();
   // .to(data.boardId)
-  io.emit("taskUpdated", updatedTask._id);
+  io.to(BoardId).emit("taskUpdated", updatedTask._id);
   return res.status(200).json({
     message: "Task updated successfully",
     updatedTask

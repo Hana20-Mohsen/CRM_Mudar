@@ -50,12 +50,16 @@ const initSocket = (server) => {
 
     console.log("user connected:", socket.id)
     socket.on("joinBoard", (boardId) => {
+      console.log(`BoardId :`);
+      console.log(boardId);
+      
+      
       socket.join(boardId);
       console.log(`user joined board ${boardId}`);
       fs.writeFileSync("data.json", JSON.stringify({ boardId:boardId }));
 
       const data = JSON.parse(fs.readFileSync("data.json"));
-      
+
       // console.log(data);
 
       // localStorage.setItem('boardId', boardId);
