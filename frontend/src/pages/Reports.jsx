@@ -151,7 +151,6 @@ if (isError) return <div>Error loading data</div>;
                     <th>In</th>
                     <th>Out</th>
                     <th>Late</th>
-                    <th>Early</th>
                     <th>Over_Time</th>
                     <th>Work_Hours</th>
                   </tr>
@@ -171,7 +170,6 @@ if (isError) return <div>Error loading data</div>;
                           )}
                       </td>
                       <td>{formatHours(a.late_minutes)}</td>
-                      <td>{formatHours(a.early_leave_minutes)}</td>
                       <td>{formatHours(a.overtimeMinutes)}</td>
                       <td>{formatHours(a.workHours)}</td>
                     </tr>
@@ -194,7 +192,6 @@ if (isError) return <div>Error loading data</div>;
                 <p><strong className="text-dark">In:</strong> {new Date(a.checkInAt).toLocaleString()}</p>
                 <p><strong className="text-dark">Out:</strong> {a.checkOutAt ? (new Date(a.checkOutAt).toLocaleString()) : (<span className="text-success fw-semibold">Still working</span>)}</p>
                 <p><strong className="text-dark">Late:</strong> {formatHours(a.late_minutes)}</p>
-                <p><strong className="text-dark">Early Leave:</strong> {formatHours(a.early_leave_minutes)}</p>
                 <p><strong className="text-dark">Overtime:</strong> {formatHours(a.overtimeMinutes)}</p>
                 <p><strong className="text-dark">Work Hours:</strong> {formatHours(a.workHours)}</p>
               </div>
