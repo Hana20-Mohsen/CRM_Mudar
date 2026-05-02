@@ -28,16 +28,13 @@ export const logout = async (req, res) => {
   if (attendance.checkOutAt) {
     return res.status(400).json({ message: "Already checked out" });
   }
+
+
   const checkIn = DateTime.fromJSDate(attendance.checkInAt).setZone("Africa/Cairo");
   const checkOut = now;
-  // --------------------- test -------------------
-//   const checkOut = now.set({
-//   hour: 16,
-//   minute: 0,
-//   second: 0,
-//   millisecond: 0,
-// });
-// ------------------------test --------------------
+
+
+
 
   // attendance.checkOutAt = nowDate;
 
@@ -81,8 +78,10 @@ export const logout = async (req, res) => {
       checkOut.diff(shiftEnd, "minutes").minutes
     );
   }
-
-  attendance.overtimeMinutes = overtimeMinutes;
+  overtimeMinutes = overtimeMinutes > 0 ? overtimeMinutes - attendance.late_minutes : 0;
+  attendance.overtimeMinutes = overtimeMinutes > 0 ? overtimeMinutes : 0;
+  console.log(`workhours : ${workHours} ,  overtime: ${overtimeMinutes}`);
+  
 
   attendance.checkOutAt = checkOut.toJSDate();
   await attendance.save();
