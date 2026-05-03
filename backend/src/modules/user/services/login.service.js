@@ -21,7 +21,8 @@ const login = asyncHandler(async (req, res, next) => {
         payload: { id: user._id, isloggedIn: true }
         , signature: user.role == userRoles.admin ? process.env.TOKEN_SIGNATURE_ADMIN : process.env.TOKEN_SIGNATURE, options: { expiresIn: '11h' }
     });
-    io.to(user._id).emit("login", { message: "User logged in", userId: user._id });
+    // io.to(user._id)
+    io.emit("login", { message: "User logged in", userId: user._id });
     // io.join(user._id);
     return res.status(200).json({
         message: 'Done',
