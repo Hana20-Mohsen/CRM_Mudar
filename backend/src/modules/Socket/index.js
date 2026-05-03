@@ -34,7 +34,8 @@ const initSocket = (server) => {
 const token = socket.handshake.auth.token
     console.log(`token from socket : `, token);
       const decoded = verifyToken({ token, signature: process.env.TOKEN_SIGNATURE_ADMIN || process.env.TOKEN_SIGNATURE })
-
+      console.log(`decode : ${decoded}`);
+      
       socket.user = decoded
       //   console.log(v);
 
