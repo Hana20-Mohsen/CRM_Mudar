@@ -31,11 +31,11 @@ const initSocket = (server) => {
     //  } 
 
     try {
-const token = socket.handshake.auth.token
-    console.log(`token from socket : `, token);
+      const token = socket.handshake.auth.token
+      console.log(`token from socket : `, token);
       const decoded = verifyToken({ token, signature: process.env.TOKEN_SIGNATURE_ADMIN || process.env.TOKEN_SIGNATURE })
-      console.log(`decode : ` , decoded);
-      
+      console.log(`decode : `, decoded);
+
       socket.user = decoded
       //   console.log(v);
 
@@ -48,13 +48,14 @@ const token = socket.handshake.auth.token
 
   })
   io.on("connection", (socket) => {
-    
+    socket.join(socket.user.id)
+     // عشان نقدر نبعتله رسائل خاصة بيه لو احتجنا
+     console.log(`user joined room : ${socket.user.id}`);
+     
     console.log("user connected:", socket.id)
     socket.on("joinBoard", (boardId) => {
       console.log(`BoardId :`);
       console.log(boardId);
-
-
       socket.join(boardId);
       console.log(`user joined board ${boardId}`);
       fs.writeFileSync("data.json", JSON.stringify({ boardId: boardId }));
