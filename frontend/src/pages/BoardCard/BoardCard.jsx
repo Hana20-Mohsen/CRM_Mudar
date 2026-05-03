@@ -5,42 +5,53 @@ import { BoardContext } from "../../context/BoardContext";
 import styles from './BoardCard.module.css';
 
 export default function Board({ item }) {
-  const { deleteBoardByItsId ,updateBoard} = useContext(BoardContext);
+  const { deleteBoardByItsId, updateBoard } = useContext(BoardContext);
   const [menuOptions, setMenuOptions] = useState(false);
   const [isDeleteBoard, setDeletedBoard] = useState(false);
   const [isUpdateBoard, setUpdateBoard] = useState(false);
   const [editData, setEditData] = useState({
-  title: item.title,
-  description: item.description,
-});
-const navigate = useNavigate();
+    title: item.title,
+    description: item.description,
+  });
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const deleteBoardMutation = useMutation({
     mutationFn: () => deleteBoardByItsId(item._id),
+    // onSuccess: async () => {
+    //   setDeletedBoard(false)
+    //   await queryClient.invalidateQueries({ queryKey: ["boards"] });
+    //   onClose();
+    // },
+      onSuccess: () => {
+    queryClient.setQueryData(["boards"], (oldData) => {
+      if (!oldData) return oldData;
+
+      return {
+        ...oldData,
+        boards: oldData.boards.filter(
+          (board) => board._id !== item._id
+        ),
+      };
+    });
+  },
+  });
+  const updateBoardMutation = useMutation({
+    mutationFn: (updatedData) => updateBoard(item._id, updatedData),
     onSuccess: async () => {
-      setDeletedBoard(false)
+      setUpdateBoard(false);
       await queryClient.invalidateQueries({ queryKey: ["boards"] });
       queryClient.refetchQueries({ queryKey: ["boards"] });
       onClose();
     },
   });
-  const updateBoardMutation = useMutation({
-  mutationFn: (updatedData) => updateBoard(item._id, updatedData),
-  onSuccess: async () => {
-    setUpdateBoard(false);
-    await queryClient.invalidateQueries({ queryKey: ["boards"] });
-    queryClient.refetchQueries({ queryKey: ["boards"] });
-      onClose();
-  },
-});
 
-const handleEditChange = (e) => {
-  setEditData({
-    ...editData,
-    [e.target.name]: e.target.value,
-  });
-};
+  const handleEditChange = (e) => {
+    setEditData({
+      ...editData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
 
 
@@ -48,7 +59,7 @@ const handleEditChange = (e) => {
     <>
 
       {/* onClick={()=>navigate("/boards/" + item._id)} */}
-     
+
 
       <div className={`col-lg-4 col-sm-4 rounded-4 pt-5 `} >
         <div className={`${styles.product} text-white cursor-pointer rounded-3 gray-border my-3 w-100 h-100 pt-5 ps-1 position-relative`}>
@@ -73,63 +84,65 @@ const handleEditChange = (e) => {
           {
             isDeleteBoard && (
               <div className={`${styles.deleteCheckHolder} z-2 position-fixed start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center`} >
-                <div className={`${styles.formHolder }  p-5 bg-light  rounded-3`}>
+                <div className={`${styles.formHolder}  p-5 bg-light  rounded-3`}>
                   <h5 className="text-center mb-4 text-dark">Are You Sure ?  </h5>
-                  <button className={`py-2 px-2 px-md-5  rounded-3 border-0 me-2 bg-danger text-white`} onClick={() => deleteBoardMutation.mutate()}>Delete</button>
-                  <button className={`py-2 px-2 px-md-5 rounded-3 border-1  me-2`} onClick={() => setDeletedBoard(false)}>Cancel</button>
+                  <div className="d-flex justify-content-center">
+                    <button className={`py-2 px-2 px-md-5  rounded-3 border-0 me-2 bg-danger text-white`} onClick={() => deleteBoardMutation.mutate()}>Delete</button>
+                    <button className={`py-2 px-2 px-md-5 rounded-3 border-1  me-2`} onClick={() => setDeletedBoard(false)}>Cancel</button>
+                  </div>
                 </div>
               </div>
             )
           }
           {/*---------------------------- end delete list ----------------------- */}
-                {/* -------------------------start edit lists ---------------- */}
- {
-  isUpdateBoard && (
-    <div className={`${styles.deleteCheckHolder}  z-2 position-fixed start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center`}>
-      
-      <div className={`${styles.formHolder} p-4 bg-light rounded-3 w-50`}>
-        <h4 className="mb-3 text-center">Edit Board</h4>
+          {/* -------------------------start edit lists ---------------- */}
+          {
+            isUpdateBoard && (
+              <div className={`${styles.deleteCheckHolder}  z-2 position-fixed start-0 end-0 top-0 bottom-0 d-flex justify-content-center align-items-center`}>
 
-        <input
-          type="text"
-          name="title"
-          className="form-control mb-3"
-          placeholder="Board Title"
-          value={editData.title}
-          onChange={handleEditChange}
-        />
+                <div className={`${styles.formHolder} p-4 bg-light rounded-3 w-50`}>
+                  <h4 className="mb-3 text-center">Edit Board</h4>
 
-        <textarea
-          name="description"
-          className="form-control mb-3"
-          placeholder="Board Description"
-          value={editData.description}
-          onChange={handleEditChange}
-        />
+                  <input
+                    type="text"
+                    name="title"
+                    className="form-control mb-3"
+                    placeholder="Board Title"
+                    value={editData.title}
+                    onChange={handleEditChange}
+                  />
 
-        <div className="text-center">
-          <button
-            className="btn btn-primary px-4 me-2"
-            onClick={() => updateBoardMutation.mutate(editData)}
-          >
-            Save
-          </button>
+                  <textarea
+                    name="description"
+                    className="form-control mb-3"
+                    placeholder="Board Description"
+                    value={editData.description}
+                    onChange={handleEditChange}
+                  />
 
-          <button
-            className="btn btn-secondary px-4"
-            onClick={() => setUpdateBoard(false)}
-          >
-            Cancel
-          </button>
-        </div>
+                  <div className="text-center">
+                    <button
+                      className="btn btn-primary px-4 me-2"
+                      onClick={() => updateBoardMutation.mutate(editData)}
+                    >
+                      Save
+                    </button>
 
-      </div>
-    </div>
-  )
-}
+                    <button
+                      className="btn btn-secondary px-4"
+                      onClick={() => setUpdateBoard(false)}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+
+                </div>
+              </div>
+            )
+          }
 
 
-      {/* ------------------------- end edit lists ---------------------- */}
+          {/* ------------------------- end edit lists ---------------------- */}
 
           {/* --------- end list options menu ---------- */}
           {/* start link to product details */}

@@ -26,6 +26,10 @@ export default function Boards() {
     enabled: !!userRole,
   });
   useEffect(() => {
+    console.log(`---------------------- Boards -----------------------`);
+    
+    console.log(`data: `, data);
+    
     console.log(data?.boards);
     let role = getUserRole();
     console.log(role);
@@ -33,7 +37,7 @@ export default function Boards() {
     if (role) {
       setUserRole(role)
     }
-  }, []);
+  }, [data]);
   // send data to API
   const sendDataToApi = async (values, resetForm) => {
     setloading(false);

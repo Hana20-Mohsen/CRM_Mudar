@@ -34,8 +34,6 @@ export const logout = async (req, res) => {
   const checkOut = now;
 
 
-
-
   // attendance.checkOutAt = nowDate;
 
   // Calculate total minutes
