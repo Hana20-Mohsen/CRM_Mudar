@@ -17,8 +17,9 @@
 import Board from "../../../DB/models/board.model.js"; 
 import { asyncHandler } from "../../../utilities/error/error.js";
 import mongoose from "mongoose";
-
+import { getSocketInstance } from "../../Socket/socketManager.js";
 const deleteBoard = asyncHandler(async (req, res, next) => {
+    const io = getSocketInstance();
     const { id } = req.params;
     const userId = req.user._id; // لازم يكون جاي من auth middleware
 
@@ -52,7 +53,7 @@ const deleteBoard = asyncHandler(async (req, res, next) => {
             message: "User removed from board"
         });
     }
-
+    
     // لو مش owner ولا موجود أصلاً
     return res.status(403).json({
         message: "You are not authorized for this action"

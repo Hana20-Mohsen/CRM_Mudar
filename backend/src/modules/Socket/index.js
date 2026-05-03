@@ -22,8 +22,7 @@ const initSocket = (server) => {
   })
   setSocketInstance(io)
   io.use((socket, next) => {
-    const token = socket.handshake.auth.token
-    // console.log(`token from socket : `, token);
+
     // console.log(`user role from socket : `, socket.handshake.auth.role);
 
 
@@ -32,7 +31,8 @@ const initSocket = (server) => {
     //  } 
 
     try {
-
+const token = socket.handshake.auth.token
+    console.log(`token from socket : `, token);
       const decoded = verifyToken({ token, signature: process.env.TOKEN_SIGNATURE_ADMIN || process.env.TOKEN_SIGNATURE })
 
       socket.user = decoded
@@ -47,16 +47,16 @@ const initSocket = (server) => {
 
   })
   io.on("connection", (socket) => {
-
+    
     console.log("user connected:", socket.id)
     socket.on("joinBoard", (boardId) => {
       console.log(`BoardId :`);
       console.log(boardId);
-      
-      
+
+
       socket.join(boardId);
       console.log(`user joined board ${boardId}`);
-      fs.writeFileSync("data.json", JSON.stringify({ boardId:boardId }));
+      fs.writeFileSync("data.json", JSON.stringify({ boardId: boardId }));
 
       const data = JSON.parse(fs.readFileSync("data.json"));
 
