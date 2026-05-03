@@ -12,6 +12,10 @@ useUpdateTask();
     socket.on("connect",()=>{
   console.log("connected:",socket.id)
  })
+ socket.on("login" , (data)=>{
+  console.log(`login socket data : ` , data);
+  toast.dark("you logged in");
+ })
     // socket.on("product-added-to-cart", (data) => {
     //   toast.dark("A product was added to cart");
     // });
@@ -30,6 +34,7 @@ useUpdateTask();
     //   socket.off("product-added-to-cart");
     //   socket.off("product-stock-updated"); // ✅ ADD THIS
     //   socket.off("product-updated");
+    socket.off("login");
     };
   }, []);
 }
