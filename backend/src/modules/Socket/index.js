@@ -48,6 +48,11 @@ const initSocket = (server) => {
 
   })
   io.on("connection", (socket) => {
+    socket.on("joinRoom", (userId) => {
+    socket.join(userId);
+    console.log(`user joined room : ${userId}`);
+    
+  });
     socket.join(socket.user.id)
      // عشان نقدر نبعتله رسائل خاصة بيه لو احتجنا
      console.log(`user joined room : ${socket.user.id}`);

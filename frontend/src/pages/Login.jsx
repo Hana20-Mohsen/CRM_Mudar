@@ -20,6 +20,9 @@ export default function Login() {
       else if (loggedUser.role === "leader") navigate("/boards");
       else if(loggedUser.role === "employee") navigate("/attendance");
       else navigate("/tasks");
+      console.log(loggedUser._id);
+      socket.emit("joinRoom", loggedUser._id);
+      
     }
   };
 
