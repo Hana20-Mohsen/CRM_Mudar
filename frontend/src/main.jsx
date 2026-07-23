@@ -25,7 +25,7 @@ createRoot(document.getElementById('root')).render(
               <LeadsProvider>
                 <ContactsProvider>
                   <DealsProvider>
-                    <BrowserRouter>
+                    <BrowserRouter basename={import.meta.env.BASE_URL}>
                       <QueryClientProvider client={queryClient}>
                         <App />
                         <ToastContainer
