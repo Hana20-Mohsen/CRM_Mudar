@@ -14,7 +14,8 @@ const initSocket = (server) => {
     cors: {
       origin: [
         "http://localhost:5173",
-        "https://crm-mudar.vercel.app"
+        "https://crm-mudar.vercel.app",
+        "http://192.168.1.135"
       ],
       methods: ["GET", "POST"],
       credentials: true
